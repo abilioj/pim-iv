@@ -4,18 +4,11 @@ PIM IV do curso SUP TEC Em Análise e Desenvolvimento de Sistemas, UNIP 2022
 
 ## Integrantes
 
-<tr>
-    <td>matricula</td>
-    <td>nome</td>
-</tr>
-<tr>
-    <td></td>
-    <td></td>
-</tr>
 
 ## Diretorios desse Repositorio
 
 - diagram - contem os diagramas do projeto
+- doc - contem documetações
 - project - contem o projeto em si na estrura da IDE CodeBlocks
 
 ## Descrição do Projeto a ser construido para esse PIM
