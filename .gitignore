@@ -1,2 +1,3 @@
 # Compiled source #
-./**/*.exe
+project/pim_diagn_covid19/bin/*
+project/pim_diagn_covid19/obj/*
