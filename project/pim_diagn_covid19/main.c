@@ -25,9 +25,9 @@ struct dados_paciente paciente;
 // Variaveis Globais
 // - ponteiro para struct que armazena data e hora
 struct tm *data_hora_atual;
-
 // - variável do tipo time_t para armazenar o tempo em segundos
 time_t segundos;
+int count = 0;
 
 //declaração dos metodos
 void menu();
@@ -85,8 +85,47 @@ void cadastrar_paciente()
         printf("\n\tData Atual: %d/%d/%d \n", dataAtual[0], dataAtual[1], dataAtual[2]);
 
         printf("\n\tNome:");
+        scanf(" %30[^\n]s", &paciente.nome);
         printf("\n\tCPF:");
+        scanf(" %30[^\n]s", &paciente.cpf);;
         printf("\n\tTelefone:");
+        scanf(" %30[^\n]s", &paciente.telefone);
+        printf("\n\tEmail:");
+        scanf(" %30[^\n]s", &paciente.email);
+
+        printf("\n\tData de nascimento:");
+        printf("\n\tDia: ");
+        fflush(stdin);
+        scanf("%d", &paciente.diaNas);
+        printf("\n\tMes: ");
+        fflush(stdin);
+        scanf("%d", &paciente.mesNas);
+        printf("\n\tAno: ");
+        fflush(stdin);
+        scanf("%d", &paciente.anoNas);
+
+        printf("\tCEP: ");
+        scanf(" %30[^\n]s", &paciente.cep);
+
+        printf("\tRua: ");
+        scanf(" %30[^\n]s", &paciente.rua);
+
+        printf("\tNumero: ");
+        fflush(stdin);
+        scanf("%d", &paciente.numero);
+        printf("\tBairro: ");
+        scanf(" %30[^\n]s", &paciente.bairro);
+
+        printf("\tCidade: ");
+        scanf(" %30[^\n]s", &paciente.cidade);
+
+        printf("\tEstado: ");
+        scanf(" %30[^\n]s", &paciente.estado);
+
+        printf("\tData do diagnostico: ");
+        scanf(" %30[^\n]s", &paciente.diaDiag);
+        setbuf(stdin, NULL);
+
 
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
         scanf("%d", &op);
