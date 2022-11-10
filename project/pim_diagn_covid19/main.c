@@ -31,12 +31,14 @@ int count = 0;
 
 //declaração dos metodos
 void menu();
+void login();
 void cadastrar_paciente();
 void listar_pacientes();
 void listar_pacientes_comorbidade();
 
 int main()
 {
+    //login();
     menu();
     printf("\n");
     return 0;
@@ -92,7 +94,6 @@ void cadastrar_paciente()
         scanf(" %30[^\n]s", &paciente.telefone);
         printf("\n\tEmail:");
         scanf(" %30[^\n]s", &paciente.email);
-
         printf("\n\tData de nascimento:");
         printf("\n\tDia: ");
         fflush(stdin);
@@ -103,15 +104,11 @@ void cadastrar_paciente()
         printf("\n\tAno: ");
         fflush(stdin);
         scanf("%d", &paciente.anoNas);
-
         printf("\tCEP: ");
         scanf(" %30[^\n]s", &paciente.cep);
-
         printf("\tRua: ");
         scanf(" %30[^\n]s", &paciente.rua);
-
         printf("\tNumero: ");
-        fflush(stdin);
         scanf("%d", &paciente.numero);
         printf("\tBairro: ");
         scanf(" %30[^\n]s", &paciente.bairro);
@@ -122,9 +119,7 @@ void cadastrar_paciente()
         printf("\tEstado: ");
         scanf(" %30[^\n]s", &paciente.estado);
 
-        printf("\tData do diagnostico: ");
-        scanf(" %30[^\n]s", &paciente.diaDiag);
-        setbuf(stdin, NULL);
+        //setbuf(stdin, NULL);
 
 
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
@@ -132,3 +127,28 @@ void cadastrar_paciente()
 
     } while (op != 0);
 }
+
+void login(){
+    char user[20], password[20];
+
+    while(1){
+        printf("\n==============================\n");
+        printf("\n      Faça seu login \n");
+        printf("\n==============================\n");
+        printf("Digite seu usuário: ");
+        (void)!scanf("%s",user);
+
+        printf("Digite sua senha: ");
+        (void)!scanf("%s",password);
+
+        if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0){
+            (void)!system("clear");
+            break;
+        }
+        system("cls");
+        printf("Seu usuário ou senha está incorreto. Por favor tente novamente.");
+        system("pause");
+        exit(0);
+    }
+}
+
