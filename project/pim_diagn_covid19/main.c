@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <string.h>
 #include <time.h>
 
@@ -12,8 +13,7 @@
 */
 
 //- Estrutuda de dados de paciente
-struct dados_paciente
-{
+struct dados_paciente {
     char nome[SIZE];
     char email[SIZE];
     int numero, diaNas, mesNas, anoNas;
@@ -38,21 +38,23 @@ void listar_pacientes_comorbidade();
 
 int main()
 {
-    //login();
+    setlocale(LC_ALL, "");
+
+    login();
     menu();
     printf("\n");
     return 0;
 }
 
-void menu(){
+void menu() {
     int op;
-    do{
+    do {
         system("cls");
         printf(" -------------------- Menu de Opcoes -------------------- ");
         printf("\n 1 - Cadastrar Paciente \n 2 - Listar todos os Pacientes \n 3 - Listar Pacientes com Comorbidade");
         printf("\n 0 - Sair\n");
         scanf("%d", &op);
-        switch(op){
+        switch(op) {
         case 0:
             printf("Fechando! Ate logo...\n\n");
             break;
@@ -66,11 +68,10 @@ void menu(){
         default:
             printf("Opcao invalida.\n\n");
         }
-    }while(op != 0);
+    } while(op != 0);
 }
 
-void cadastrar_paciente()
-{
+void cadastrar_paciente() {
     int op, dataAtual[3];
     //obtendo o tempo em segundos atual da maquina
     time(&segundos);
@@ -81,7 +82,7 @@ void cadastrar_paciente()
     dataAtual[1] = data_hora_atual->tm_mon+1;
     dataAtual[2] = data_hora_atual->tm_year+1900;
 
-    do{
+    do {
         system("cls");
         printf(" -------------------- Cadastrar Paciente -------------------- ");
         printf("\n\tData Atual: %d/%d/%d \n", dataAtual[0], dataAtual[1], dataAtual[2]);
@@ -128,27 +129,26 @@ void cadastrar_paciente()
     } while (op != 0);
 }
 
-void login(){
+void login() {
     char user[20], password[20];
 
-    while(1){
+    while(1) {
         printf("\n==============================\n");
         printf("\n      Faça seu login \n");
         printf("\n==============================\n");
-        printf("Digite seu usuário: ");
+        printf("Digite seu usuario: ");
         (void)!scanf("%s",user);
 
         printf("Digite sua senha: ");
         (void)!scanf("%s",password);
 
-        if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0){
+        if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0) {
             (void)!system("clear");
             break;
         }
         system("cls");
-        printf("Seu usuário ou senha está incorreto. Por favor tente novamente.");
+        printf("Seu usuario ou senha esta incorreto. Por favor tente novamente.");
         system("pause");
         exit(0);
     }
 }
-
