@@ -23,6 +23,8 @@ struct dados_paciente {
 struct dados_paciente paciente;
 
 // Variaveis Globais
+// - ponteiro de lista de paciente
+
 // - ponteiro para struct que armazena data e hora
 struct tm *data_hora_atual;
 // - variável do tipo time_t para armazenar o tempo em segundos
@@ -35,10 +37,11 @@ void login();
 void cadastrar_paciente();
 void listar_pacientes();
 void listar_pacientes_comorbidade();
+void Salvar_no_arquivo();
 
 int main()
 {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "Portuguese");
 
     login();
     menu();
@@ -122,6 +125,7 @@ void cadastrar_paciente() {
 
         //setbuf(stdin, NULL);
 
+        //if(){}
 
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
         scanf("%d", &op);
@@ -136,7 +140,7 @@ void login() {
         printf("\n==============================\n");
         printf("\n      Faça seu login \n");
         printf("\n==============================\n");
-        printf("Digite seu usuario: ");
+        printf("Digite seu usuário: ");
         (void)!scanf("%s",user);
 
         printf("Digite sua senha: ");
@@ -147,7 +151,7 @@ void login() {
             break;
         }
         system("cls");
-        printf("Seu usuario ou senha esta incorreto. Por favor tente novamente.");
+        printf("Seu usuário ou senha está incorreto. Por favor tente novamente.");
         system("pause");
         exit(0);
     }
