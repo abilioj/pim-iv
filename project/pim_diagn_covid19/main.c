@@ -20,16 +20,21 @@ struct dados_paciente {
     char cpf[11], telefone[15], cep[10], diaDiag[11];
     char rua[SIZE], bairro[SIZE], cidade[SIZE], estado[SIZE], comorbidade[10], quais[SIZE];
 };
+
 struct dados_paciente paciente;
 
 // Variaveis Globais
-// - ponteiro de lista de paciente
-
+// - ponteiro de manipular arquivos
+FILE *file;
 // - ponteiro para struct que armazena data e hora
 struct tm *data_hora_atual;
-// - variável do tipo time_t para armazenar o tempo em segundos
+// - variavel do tipo time_t para armazenar o tempo em segundos
 time_t segundos;
 int count = 0;
+// - variavel de url do arquivo txt que guadar os dados Pacientes
+char urlArquivosPacientes[] = "dadosPacientes.txt";
+// - variavel de url do arquivo txt que guadar os dados Pacientes Diagnosticados com comobidade
+char urlArquivosPacientDiagnosticados[] = "dadosPacientesDiagnosticados.txt";
 
 //declaração dos metodos
 void menu();
@@ -38,12 +43,11 @@ void cadastrar_paciente();
 void listar_pacientes();
 void listar_pacientes_comorbidade();
 void Salvar_no_arquivo();
+void lendo_arquivo();
 
-int main()
-{
+int main() {
     setlocale(LC_ALL, "Portuguese");
-
-    login();
+    //login();
     menu();
     printf("\n");
     return 0;
@@ -65,6 +69,7 @@ void menu() {
             cadastrar_paciente();
             break;
         case 2:
+            listar_pacientes();
             break;
         case 3:
             break;
@@ -127,25 +132,42 @@ void cadastrar_paciente() {
 
         //if(){}
 
+        Salvar_no_arquivo();
+
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
         scanf("%d", &op);
 
     } while (op != 0);
 }
 
+void listar_pacientes() {
+    system("cls");
+    printf(" -------------------- listar Paciente -------------------- \n\n");
+    lendo_arquivo();
+    printf("\n");
+    system("pause");
+}
+
 void login() {
     char user[20], password[20];
+    printf("\n");
+    printf("  **   **  **   **   ****  ******        ******    ****    **   **       ****  **   ** \n");
+    printf("  **   **  ***  **    **    **  **        **  **    **     *** ***        **   **   ** \n");
+    printf("  **   **  **** **    **    **  **        **  **    **     *******        **    ** **  \n");
+    printf("  **   **  ** ****    **    *****   **    *****     **     *******  **    **    ** **  \n");
+    printf("  **   **  **  ***    **    **            **        **     ** * **        **     ***   \n");
+    printf("  **   **  **   **    **    **            **        **     **   **        **     ***   \n");
+    printf("   *****   **   **   ****  ****          ****      ****    **   **       ****     *    \n");
+    printf("\n=====================================================================================\n");
+    printf("\n                              Faça seu login                                         \n");
+    printf("\n=====================================================================================\n");
 
     while(1) {
-        printf("\n==============================\n");
-        printf("\n      Faça seu login \n");
-        printf("\n==============================\n");
         printf("Digite seu usuário: ");
         (void)!scanf("%s",user);
-
         printf("Digite sua senha: ");
         (void)!scanf("%s",password);
-
+        //Verifica o usuario e a senha pra entra no sistema
         if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0) {
             (void)!system("clear");
             break;
@@ -155,4 +177,27 @@ void login() {
         system("pause");
         exit(0);
     }
+}
+
+void Salvar_no_arquivo() {
+    file = fopen(urlArquivosPacientes,"a");
+    if(file == NULL) { //valida se foi possivel abri o arquivo
+        printf("Erro, nao foi possivel abrir o arquivo\n e o programa sera fechado!\n");
+        system("pause");
+        exit(0);
+    }
+    fprintf(file,"%s %s \n",&paciente.nome,&paciente.cep);
+    fclose(file);
+}
+
+void lendo_arquivo() {
+    file = fopen(urlArquivosPacientes,"rt");
+    if(file == NULL) { //valida se foi possivel abri o arquivo
+        printf("Erro, nao foi possivel abrir o arquivo\n e o programa sera fechado!\n");
+        system("pause");
+        exit(0);
+    }
+    while(fscanf(file,"%s %s \n",paciente.nome,paciente.cep) != -1)
+        printf("%s %s \n",paciente.nome,paciente.cep);
+    fclose(file);
 }
