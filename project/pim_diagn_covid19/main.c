@@ -13,11 +13,12 @@
 */
 
 //- Estrutuda de dados de paciente
-struct dados_paciente {
+struct dados_paciente
+{
     char nome[SIZE];
     char email[SIZE];
     int numero, diaNas, mesNas, anoNas;
-    char cpf[11], telefone[15], cep[10], diaDiag[11];
+    char cpf[11], telefone[15], cep[10], dataDiag[11];
     char rua[SIZE], bairro[SIZE], cidade[SIZE], estado[SIZE], comorbidade[10], quais[SIZE];
 };
 
@@ -33,19 +34,21 @@ time_t segundos;
 int count = 0;
 // - variavel de url do arquivo txt que guadar os dados Pacientes
 char urlArquivosPacientes[] = "dadosPacientes.txt";
-// - variavel de url do arquivo txt que guadar os dados Pacientes Diagnosticados com comobidade
-char urlArquivosPacientDiagnosticados[] = "dadosPacientesDiagnosticados.txt";
+// - variavel de url do arquivo txt que guadar os dados Pacientes Diagnosticados com comobidade Risco
+char urlArquivosPacientesRisco[] = "dadosPacientesRisco.txt";
 
 //declaração dos metodos
 void menu();
 void login();
 void cadastrar_paciente();
 void listar_pacientes();
-void listar_pacientes_comorbidade();
+void listar_pacientes_risco();
 void Salvar_no_arquivo();
+void Salvar_no_arquivo_risco(int idade);
 void lendo_arquivo();
 
-int main() {
+int main()
+{
     setlocale(LC_ALL, "Portuguese");
     //login();
     menu();
@@ -53,15 +56,18 @@ int main() {
     return 0;
 }
 
-void menu() {
+void menu()
+{
     int op;
-    do {
+    do
+    {
         system("cls");
         printf(" -------------------- Menu de Opcoes -------------------- ");
         printf("\n 1 - Cadastrar Paciente \n 2 - Listar todos os Pacientes \n 3 - Listar Pacientes com Comorbidade");
         printf("\n 0 - Sair\n");
         scanf("%d", &op);
-        switch(op) {
+        switch(op)
+        {
         case 0:
             printf("Fechando! Ate logo...\n\n");
             break;
@@ -76,29 +82,31 @@ void menu() {
         default:
             printf("Opcao invalida.\n\n");
         }
-    } while(op != 0);
+    }
+    while(op != 0);
 }
 
-void cadastrar_paciente() {
-    int op, dataAtual[3];
+void cadastrar_paciente()
+{
+    int op, opCom, dataAtual[3],anoAtual,idade;
+    char textDataAtual[40];
     //obtendo o tempo em segundos atual da maquina
     time(&segundos);
     //para converter de segundos para o tempo local
     //utilizamos a função localtime
     data_hora_atual = localtime(&segundos);
-    dataAtual[0] = data_hora_atual->tm_mday;
-    dataAtual[1] = data_hora_atual->tm_mon+1;
-    dataAtual[2] = data_hora_atual->tm_year+1900;
+    anoAtual = (data_hora_atual->tm_year+1900);
+    strftime(textDataAtual,40,"%d/%b/%Y.",data_hora_atual);
 
-    do {
+    do
+    {
         system("cls");
         printf(" -------------------- Cadastrar Paciente -------------------- ");
-        printf("\n\tData Atual: %d/%d/%d \n", dataAtual[0], dataAtual[1], dataAtual[2]);
-
+        printf("\n\tData Atual: %s \n", textDataAtual);
         printf("\n\tNome:");
         scanf(" %30[^\n]s", &paciente.nome);
         printf("\n\tCPF:");
-        scanf(" %30[^\n]s", &paciente.cpf);;
+        scanf(" %30[^\n]s", &paciente.cpf);
         printf("\n\tTelefone:");
         scanf(" %30[^\n]s", &paciente.telefone);
         printf("\n\tEmail:");
@@ -121,26 +129,41 @@ void cadastrar_paciente() {
         scanf("%d", &paciente.numero);
         printf("\tBairro: ");
         scanf(" %30[^\n]s", &paciente.bairro);
-
         printf("\tCidade: ");
         scanf(" %30[^\n]s", &paciente.cidade);
-
         printf("\tEstado: ");
         scanf(" %30[^\n]s", &paciente.estado);
 
-        //setbuf(stdin, NULL);
+        strcpy(paciente.dataDiag,textDataAtual);
 
-        //if(){}
-
+        printf("O paciente tem alguma comorbidade? 1. Sim / 0. Não ");
+        scanf("%d",&opCom);
+        setbuf(stdin, NULL);
+        if(opCom==1)
+        {
+            strcpy(paciente.comorbidade, "SIM");
+            printf("Quais? ");
+            scanf(" %200[^\n]s", &paciente.quais);
+        }
+        else
+        {
+            strcpy(paciente.comorbidade, "NÂO");
+            strcpy(paciente.quais, "...");
+        }
+        //aqui chamar a função se salva os dados no arquivo
         Salvar_no_arquivo();
+
+        idade = anoAtual - paciente.anoNas;
+        if(idade >=65 || opCom == 1 ) Salvar_no_arquivo_risco(idade);
 
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
         scanf("%d", &op);
-
-    } while (op != 0);
+    }
+    while (op != 0);
 }
 
-void listar_pacientes() {
+void listar_pacientes()
+{
     system("cls");
     printf(" -------------------- listar Paciente -------------------- \n\n");
     lendo_arquivo();
@@ -148,7 +171,8 @@ void listar_pacientes() {
     system("pause");
 }
 
-void login() {
+void login()
+{
     char user[20], password[20];
     printf("\n");
     printf("  **   **  **   **   ****  ******        ******    ****    **   **       ****  **   ** \n");
@@ -162,13 +186,15 @@ void login() {
     printf("\n                              Faça seu login                                         \n");
     printf("\n=====================================================================================\n");
 
-    while(1) {
+    while(1)
+    {
         printf("Digite seu usuário: ");
         (void)!scanf("%s",user);
         printf("Digite sua senha: ");
         (void)!scanf("%s",password);
         //Verifica o usuario e a senha pra entra no sistema
-        if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0) {
+        if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0)
+        {
             (void)!system("clear");
             break;
         }
@@ -179,25 +205,68 @@ void login() {
     }
 }
 
-void Salvar_no_arquivo() {
+void Salvar_no_arquivo()
+{
     file = fopen(urlArquivosPacientes,"a");
-    if(file == NULL) { //valida se foi possivel abri o arquivo
+    if(file == NULL)   //valida se foi possivel abri o arquivo
+    {
         printf("Erro, nao foi possivel abrir o arquivo\n e o programa sera fechado!\n");
         system("pause");
         exit(0);
     }
-    fprintf(file,"%s %s \n",&paciente.nome,&paciente.cep);
+    fprintf(file,"%s ",paciente.nome);
+    fprintf(file," %s ", &paciente.cep);
+    fprintf(file," %s ", &paciente.cpf);
+    fprintf(file," %s ", &paciente.telefone);
+    fprintf(file," %s ", &paciente.email);
+    fprintf(file," %d", paciente.diaNas);
+    fprintf(file,"/%d/", paciente.mesNas);
+    fprintf(file,"%d ", paciente.anoNas);
+    fprintf(file," %s ", &paciente.rua);
+    fprintf(file," %d ", paciente.numero);
+    fprintf(file," %s ", &paciente.bairro);
+    fprintf(file," %s ", &paciente.cidade);
+    fprintf(file," %s ", &paciente.estado);
+    fprintf(file," %s ", &paciente.comorbidade);
+    fprintf(file," %s ", &paciente.dataDiag);
+    fprintf(file," %s \n\n", &paciente.quais);
+
     fclose(file);
 }
 
-void lendo_arquivo() {
-    file = fopen(urlArquivosPacientes,"rt");
-    if(file == NULL) { //valida se foi possivel abri o arquivo
+void Salvar_no_arquivo_risco(int idade)
+{
+    file = fopen(urlArquivosPacientesRisco,"a");
+    if(file == NULL)   //valida se foi possivel abri o arquivo
+    {
         printf("Erro, nao foi possivel abrir o arquivo\n e o programa sera fechado!\n");
         system("pause");
         exit(0);
     }
-    while(fscanf(file,"%s %s \n",paciente.nome,paciente.cep) != -1)
-        printf("%s %s \n",paciente.nome,paciente.cep);
+    fprintf(file,"%d \n",idade);
+    fprintf(file,"%s \n\n", &paciente.cep);
+    printf("\n\nO Paciente pertencente ao grupo de risco.");
+    fclose(file);
+}
+
+void lendo_arquivo()
+{
+    file = fopen(urlArquivosPacientes,"rt");
+    if(file == NULL)   //valida se foi possivel abri o arquivo
+    {
+        printf("Erro, nao foi possivel abrir o arquivo\n e o programa sera fechado!\n");
+        system("pause");
+        exit(0);
+    }
+    //while(fscanf(file,"%s %s \n",paciente.nome,paciente.cep) != -1)
+    //    printf("%s %s \n",paciente.nome,paciente.cep);
+
+    char linha[500];
+    char *result;
+    while(!feof(file))
+    {
+        result = fgets(linha,500,file);//lendo linha por linha do arquivo
+        if(result) printf("%s",linha);
+    }
     fclose(file);
 }
