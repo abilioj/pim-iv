@@ -45,19 +45,17 @@ void listar_pacientes();
 void listar_pacientes_risco();
 void Salvar_no_arquivo();
 void Salvar_no_arquivo_risco(int idade);
-void lendo_arquivo();
+void lendo_arquivo_risco();
 
-int main()
-{
+int main(){
     setlocale(LC_ALL, "Portuguese");
-    //login();
+    login();
     menu();
     printf("\n");
     return 0;
 }
 
-void menu()
-{
+void menu(){
     int op;
     do
     {
@@ -78,6 +76,7 @@ void menu()
             listar_pacientes();
             break;
         case 3:
+            listar_pacientes_risco();
             break;
         default:
             printf("Opcao invalida.\n\n");
@@ -86,8 +85,7 @@ void menu()
     while(op != 0);
 }
 
-void cadastrar_paciente()
-{
+void cadastrar_paciente(){
     int op, opCom, dataAtual[3],anoAtual,idade;
     char textDataAtual[40];
     //obtendo o tempo em segundos atual da maquina
@@ -96,7 +94,7 @@ void cadastrar_paciente()
     //utilizamos a função localtime
     data_hora_atual = localtime(&segundos);
     anoAtual = (data_hora_atual->tm_year+1900);
-    strftime(textDataAtual,40,"%d/%b/%Y.",data_hora_atual);
+    strftime(textDataAtual,40,"%d/%m/%Y.",data_hora_atual);
 
     do
     {
@@ -104,46 +102,57 @@ void cadastrar_paciente()
         printf(" -------------------- Cadastrar Paciente -------------------- ");
         printf("\n\tData Atual: %s \n", textDataAtual);
         printf("\n\tNome:");
-        scanf(" %30[^\n]s", &paciente.nome);
+        scanf(" %s", &paciente.nome);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tCPF:");
-        scanf(" %30[^\n]s", &paciente.cpf);
+        scanf(" %s", &paciente.cpf);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tTelefone:");
-        scanf(" %30[^\n]s", &paciente.telefone);
+        scanf(" %s", &paciente.telefone);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tEmail:");
-        scanf(" %30[^\n]s", &paciente.email);
+        scanf(" %s", &paciente.email);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tData de nascimento:");
         printf("\n\tDia: ");
-        fflush(stdin);
         scanf("%d", &paciente.diaNas);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tMes: ");
-        fflush(stdin);
         scanf("%d", &paciente.mesNas);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\n\tAno: ");
-        fflush(stdin);
         scanf("%d", &paciente.anoNas);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tCEP: ");
-        scanf(" %30[^\n]s", &paciente.cep);
+        scanf(" %s", &paciente.cep);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tRua: ");
-        scanf(" %30[^\n]s", &paciente.rua);
+        scanf(" %s", &paciente.rua);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tNumero: ");
         scanf("%d", &paciente.numero);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tBairro: ");
-        scanf(" %30[^\n]s", &paciente.bairro);
+        scanf(" %s", &paciente.bairro);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tCidade: ");
-        scanf(" %30[^\n]s", &paciente.cidade);
+        scanf(" %s", &paciente.cidade);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("\tEstado: ");
-        scanf(" %30[^\n]s", &paciente.estado);
+        scanf(" %s", &paciente.estado);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
 
         strcpy(paciente.dataDiag,textDataAtual);
 
         printf("O paciente tem alguma comorbidade? 1. Sim / 0. Não ");
         scanf("%d",&opCom);
-        setbuf(stdin, NULL);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         if(opCom==1)
         {
             strcpy(paciente.comorbidade, "SIM");
             printf("Quais? ");
-            scanf(" %200[^\n]s", &paciente.quais);
+            scanf(" %s", &paciente.quais);
+            setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         }
         else
         {
@@ -158,12 +167,12 @@ void cadastrar_paciente()
 
         printf("\n\n\n\n Digite: 1) - Para Cadastrar novamente um Paciente ou 0) - Sair dessa opcao\n");
         scanf("%d", &op);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
     }
     while (op != 0);
 }
 
-void listar_pacientes()
-{
+void listar_pacientes(){
     system("cls");
     printf(" -------------------- listar Paciente -------------------- \n\n");
     lendo_arquivo();
@@ -171,8 +180,15 @@ void listar_pacientes()
     system("pause");
 }
 
-void login()
-{
+void listar_pacientes_risco(){
+    system("cls");
+    printf(" -------------------- listar Paciente comobidade (Risco) -------------------- \n\n");
+    lendo_arquivo_risco();
+    printf("\n");
+    system("pause");
+}
+
+void login(){
     char user[20], password[20];
     printf("\n");
     printf("  **   **  **   **   ****  ******        ******    ****    **   **       ****  **   ** \n");
@@ -190,8 +206,10 @@ void login()
     {
         printf("Digite seu usuário: ");
         (void)!scanf("%s",user);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         printf("Digite sua senha: ");
         (void)!scanf("%s",password);
+        setbuf(stdin, NULL);//limpa o buffer de entrada do teclado
         //Verifica o usuario e a senha pra entra no sistema
         if(strcmp(user,"admin") == 0 && strcmp(password, "admin") == 0)
         {
@@ -205,8 +223,7 @@ void login()
     }
 }
 
-void Salvar_no_arquivo()
-{
+void Salvar_no_arquivo(){
     file = fopen(urlArquivosPacientes,"a");
     if(file == NULL)   //valida se foi possivel abri o arquivo
     {
@@ -230,12 +247,10 @@ void Salvar_no_arquivo()
     fprintf(file," %s ", &paciente.comorbidade);
     fprintf(file," %s ", &paciente.dataDiag);
     fprintf(file," %s \n\n", &paciente.quais);
-
     fclose(file);
 }
 
-void Salvar_no_arquivo_risco(int idade)
-{
+void Salvar_no_arquivo_risco(int idade){
     file = fopen(urlArquivosPacientesRisco,"a");
     if(file == NULL)   //valida se foi possivel abri o arquivo
     {
@@ -243,14 +258,13 @@ void Salvar_no_arquivo_risco(int idade)
         system("pause");
         exit(0);
     }
-    fprintf(file,"%d \n",idade);
-    fprintf(file,"%s \n\n", &paciente.cep);
+    fprintf(file,"idade: %d \n",idade);
+    fprintf(file,"cep: %s \n\n", &paciente.cep);
     printf("\n\nO Paciente pertencente ao grupo de risco.");
     fclose(file);
 }
 
-void lendo_arquivo()
-{
+void lendo_arquivo(){
     file = fopen(urlArquivosPacientes,"rt");
     if(file == NULL)   //valida se foi possivel abri o arquivo
     {
@@ -261,6 +275,23 @@ void lendo_arquivo()
     //while(fscanf(file,"%s %s \n",paciente.nome,paciente.cep) != -1)
     //    printf("%s %s \n",paciente.nome,paciente.cep);
 
+    char linha[500];
+    char *result;
+    while(!feof(file))
+    {
+        result = fgets(linha,500,file);//lendo linha por linha do arquivo
+        if(result) printf("%s",linha);
+    }
+    fclose(file);
+}
+
+void lendo_arquivo_risco(){
+    file = fopen(urlArquivosPacientesRisco,"rt");
+    if(file == NULL)   //valida se foi possivel abri o arquivo
+    {
+        printf("Erro, nao foi possivel abrir o arquivo!\n");
+        return;
+    }
     char linha[500];
     char *result;
     while(!feof(file))
